@@ -1,10 +1,39 @@
-const Sequelize = require('sequelize');
-require('dotenv').config();
+const path = require('path');
+const express = require('express');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const exphbs = require('express-handlebars');
+const helpers = require('./utils/helpers');
+const hbs = exphbs.create({helpers});
+const routes = require('./controllers');
+const sequelize = require('./config/connection');
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: 'localhost',
-    dialect: 'mysql',
-    port: 3306
-});
+const app = express();
+const PORT = process.env.PORT || 3001;
 
-module.exports = sequelize;
+const sess = {
+    secret: 'Secret session',
+    cookie: {},
+    resave: false,
+    saveUnitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
+
+app.use(session(sess));
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+app.use(routes);
+
+// {force:false}: optional. if true, will drop and recreate db of all tables on startup. (Equiv to DROP TABLE IF EXISTS)
+sequelize.sync({force: false})
+    .then(() => {
+        app.listen(PORT, () => console.log('Now listening'));
+    })
