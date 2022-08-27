@@ -2,7 +2,30 @@ const {Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/connection');
 
 class Post extends Model {
-    // add upvote feature after Vote model is created
+    static like(body, models) {
+        // send a user & post id to the like obj being created
+        return models.Like.create({
+            user_id: body.user_id,
+            post_id: body.post_id
+        })
+        .then(() => {
+            // then add the like to the post obj it's applied to
+            return Post.findOne({
+                where: {
+                    id: body.post_id
+                },
+                attributes: [
+                    'id',
+                    'title',
+                    'body',
+                    'created_at',
+                    // create/add to a row called vote_count that is a number value of all the like.post_ids that match the post.id
+                    [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'vote_count']
+                ],
+                // later include:[] a list of comments associated with this post
+            });
+        });
+    }
 }
 
 Post.init(
@@ -17,7 +40,7 @@ Post.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        post_body: {
+        body: {
             type: DataTypes.STRING,
             allowNull: false
         },
