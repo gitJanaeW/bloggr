@@ -20,7 +20,7 @@ class Post extends Model {
                     'body',
                     'created_at',
                     // create/add to a row called vote_count that is a number value of all the like.post_ids that match the post.id
-                    [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'vote_count']
+                    [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
                 ],
                 // later include:[] a list of comments associated with this post
             });
@@ -57,7 +57,6 @@ Post.init(
     },
     {
         sequelize,
-        timestamps: false,
         freezeTableName: true,
         underscored: true,
         modelName: 'post'
