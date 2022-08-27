@@ -5,7 +5,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const exphbs = require('express-handlebars');
 // const helpers = require('./utils/helpers');
 // const hbs = exphbs.create({helpers});
-// const routes = require('./controllers');
+const routes = require('./controllers/');
 const sequelize = require('./config/connection');
 
 const app = express();
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.engine('handlebars', hbs.engine);
 // app.set('view engine', 'handlebars');
 
-// app.use(routes);
+app.use(routes);
 
 // {force:false}: optional. if true, will drop and recreate db of all tables on startup. (Equiv to DROP TABLE IF EXISTS)
 sequelize.sync({force: false})
