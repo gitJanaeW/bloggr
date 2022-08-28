@@ -14,12 +14,12 @@ class Post extends Model {
                 where: {
                     id: body.post_id
                 },
+                //add 'created_at' and get it working
                 attributes: [
                     'id',
                     'title',
                     'body',
-                    'created_at',
-                    // create/add to a row called vote_count that is a number value of all the like.post_ids that match the post.id
+                    // create/add to a row called like_count that is a number value of all the like.post_ids that match the post.id
                     [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
                 ],
                 // later include:[] a list of comments associated with this post
@@ -38,7 +38,10 @@ Post.init(
         },
         title: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                len: [1]
+            }
         },
         body: {
             type: DataTypes.STRING,
@@ -57,6 +60,7 @@ Post.init(
     },
     {
         sequelize,
+        timestamps: false, //add 'created_at' and get it working
         freezeTableName: true,
         underscored: true,
         modelName: 'post'
