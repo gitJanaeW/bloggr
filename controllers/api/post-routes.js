@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
             'id',
             'title',
             'body',
-            [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
+            // [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
         ],
         include: [
             {
@@ -50,7 +50,7 @@ router.get('/:id', (req, res) => {
             'id',
             'title',
             'body',
-            [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
+            // [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
         ],
         include: [
             {
@@ -69,7 +69,7 @@ router.get('/:id', (req, res) => {
     })
     .then(data => {
         if (!data) {
-            res.status(400).json({message: 'No post found wit this id'});
+            res.status(400).json({message: 'No post found with this id'});
             return;
         }
         res.json(data);
@@ -94,17 +94,17 @@ router.post('/', withAuth, (req, res) => {
 });
 
 // like a post
-router.put('/upvote', (req, res) => {
-    Post.like({...req.body, user_id: req.session.user_id}, {Vote, Comment, User})
-    .then(data => res.json(data))
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    });
-});
+// router.put('/upvote', (req, res) => {
+//     Post.like({...req.body, user_id: req.session.user_id}, {Vote, Comment, User})
+//     .then(data => res.json(data))
+//     .catch(err => {
+//         console.log(err);
+//         res.status(500).json(err);
+//     });
+// });
 
 // edit a post
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
     Post.update(
         {
             title: req.body.title,
