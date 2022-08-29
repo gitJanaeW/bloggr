@@ -1,4 +1,5 @@
 // NOTE: get routes are not working due to SQL syntax
+// NOTE: like a post route not tested
 const router = require('express').Router();
 const sequelize = require('sequelize');
 const {User, Post, Like, Comment} = require('../../models');
@@ -93,6 +94,14 @@ router.post('/', withAuth, (req, res) => {
 });
 
 // like a post
+router.put('/upvote', (req, res) => {
+    Post.like({...req.body, user_id: req.session.user_id}, {Vote, Comment, User})
+    .then(data => res.json(data))
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
 
 // edit a post
 router.put('/:id', (req, res) => {
