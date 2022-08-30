@@ -60,7 +60,6 @@ Post.init(
     },
     {
         sequelize,
-        timestamps: false, //add 'created_at' and get it working
         freezeTableName: true,
         underscored: true,
         modelName: 'post'

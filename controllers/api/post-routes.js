@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
             'id',
             'title',
             'body',
+            [sequelize.literal('(SELECT COUNT(*) created_at FROM user')]
             // [sequelize.literal('(SELECT COUNT(*) FROM like WHERE post.id = like.post_id)'), 'like_count']
         ],
         include: [

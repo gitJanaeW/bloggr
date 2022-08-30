@@ -1,0 +1,67 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body, html {
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: rgb(40, 43, 46);
+}
+
+a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 2px rgb(40, 40, 45);
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: rgb(41, 49, 58);
+}
+
+h1 {
+    padding-left: 2%;
+    font-size:x-large;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+}
+
+nav > * {
+    padding: 6% 20px;
+}
+
+main {
+    margin: 0 10%;
+}
+
+.card {
+    background-color: aliceblue;
+    margin: 5% 0;
+    border-radius: 7px;
+}
+
+.title {
+    justify-content: space-between;
+    background-color: rgb(88, 91, 117);
+    padding: 1% 4%;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.body {
+    padding: 3% 4% 4% 4%;
+}
+
+h2, .username {
+    color: aliceblue;
+    font-size: 2vw;
+}
